@@ -340,6 +340,8 @@ $(INSTALLED_BOOTIMAGE_TARGET): $(MKBOOTIMG) $(INTERNAL_BOOTIMAGE_FILES)
 	$(hide) $(call assert-max-image-size,$@,$(BOARD_BOOTIMAGE_PARTITION_SIZE),raw)
 endif # TARGET_BOOTIMAGE_USE_EXT2
 
+include $(BUILD_SYSTEM)/kernel.mk
+
 else	# TARGET_NO_KERNEL
 # HACK: The top-level targets depend on the bootimage.  Not all targets
 # can produce a bootimage, though, and emulator targets need the ramdisk
@@ -666,7 +668,7 @@ define build-systemimage-target
 endef
 endif # TARGET_USERIMAGES_USE_EXT2
 
-$(BUILT_SYSTEMIMAGE_UNOPT): $(INTERNAL_SYSTEMIMAGE_FILES) $(INTERNAL_MKUSERFS)
+$(BUILT_SYSTEMIMAGE_UNOPT): $(INSTALLED_KERNEL_TARGET) $(INTERNAL_SYSTEMIMAGE_FILES) $(INTERNAL_MKUSERFS)
 	$(call build-systemimage-target,$@)
 
 # The installed image, which may be optimized or unoptimized.
