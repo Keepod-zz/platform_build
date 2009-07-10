@@ -522,7 +522,7 @@ endif
 
 $(INSTALLED_SYSTEMIMAGE): $(BUILT_SYSTEMIMAGE) | $(ACP)
 	@echo "Install system fs image: $@"
-	$(copy-file-to-target)
+	$(if $(MKSQUASHFS),$(call build-squashfs-target,$^,$@),$(copy-file-to-target))
 	$(hide) $(call assert-max-file-size,$@,$(BOARD_SYSTEMIMAGE_MAX_SIZE))
 
 systemimage: $(INSTALLED_SYSTEMIMAGE)
