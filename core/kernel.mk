@@ -30,7 +30,7 @@ $(BUILT_KERNEL_TARGET): $(KERNEL_CONFIG_FILE) | $(KBUILD_OUTPUT)
 	$(mk_kernel) $(KERNEL_TARGET) $(if $(MOD_ENABLED),modules)
 
 $(INSTALLED_KERNEL_TARGET): $(BUILT_KERNEL_TARGET) | $(ACP)
-	$(transform-prebuilt-to-target)
+	$(copy-file-to-new-target)
 ifdef TARGET_PREBUILT_MODULES
 	$(ACP) -r $(TARGET_PREBUILT_MODULES) $(TARGET_OUT)/lib
 else
