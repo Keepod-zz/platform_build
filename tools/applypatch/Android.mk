@@ -13,6 +13,7 @@
 # limitations under the License.
 
 ifneq ($(TARGET_SIMULATOR),true)
+ifneq ($(TARGET_ARCH),x86)
 
 LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
@@ -56,4 +57,5 @@ LOCAL_STATIC_LIBRARIES += libz
 
 include $(BUILD_HOST_EXECUTABLE)
 
+endif  # !TARGET_ARCH
 endif  # !TARGET_SIMULATOR
