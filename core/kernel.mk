@@ -26,14 +26,12 @@ FIRMWARE_ENABLED := $(shell grep ^CONFIG_FIRMWARE_IN_KERNEL=y $(KERNEL_CONFIG_FI
 # but I don't want to write a complex Android.mk to build kernel.
 # This is the simplest way I can think.
 BUILT_KERNEL_TARGET := $(KBUILD_OUTPUT)/arch/$(TARGET_ARCH)/boot/$(KERNEL_TARGET)
-$(BUILT_KERNEL_TARGET): $(KERNEL_CONFIG_FILE) | $(KBUILD_OUTPUT)
+$(INSTALLED_KERNEL_TARGET): $(KERNEL_CONFIG_FILE) | $(KBUILD_OUTPUT) $(ACP)
 	$(mk_kernel) $(TARGET_KERNEL_CONFIG)
 	$(mk_kernel) $(KERNEL_TARGET) $(if $(MOD_ENABLED),modules)
-
-$(INSTALLED_KERNEL_TARGET): $(BUILT_KERNEL_TARGET) | $(ACP)
-	$(copy-file-to-new-target)
+	$(hide) $(ACP) -fp $(BUILT_KERNEL_TARGET) $@
 ifdef TARGET_PREBUILT_MODULES
-	$(ACP) -r $(TARGET_PREBUILT_MODULES) $(TARGET_OUT)/lib
+	$(hide) $(ACP) -r $(TARGET_PREBUILT_MODULES) $(TARGET_OUT)/lib
 else
 ifneq ($(MOD_ENABLED),)
 	$(mk_kernel) INSTALL_MOD_PATH=$(CURDIR)/$(TARGET_OUT) modules_install
