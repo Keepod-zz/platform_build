@@ -26,7 +26,7 @@ ifeq ($(TARGET_PRODUCT),)
 ifeq ($(TARGET_SIMULATOR),true)
 TARGET_PRODUCT := sim
 else
-TARGET_PRODUCT := generic
+TARGET_PRODUCT := generic_x86
 endif
 endif
 
@@ -137,9 +137,13 @@ TARGET_ARCH := $(HOST_ARCH)
 TARGET_OS := $(HOST_OS)
 else
 ifeq ($(TARGET_ARCH),)
-TARGET_ARCH := arm
+TARGET_ARCH := $(if $(call is_inherited_from,$(INTERNAL_PRODUCT),generic_x86.mk),x86,arm)
 endif
 TARGET_OS := linux
+endif
+
+ifeq ($(TARGET_ARCH),x86)
+  DISABLE_DEXPREOPT := true
 endif
 
 # the target build type defaults to release
