@@ -332,7 +332,64 @@ define add-prebuilt-files
     $(foreach f,$(2),$(call add-prebuilt-file,$f,$(1)))
 endef
 
+###########################################################
+## Add a prebuilt target $(2) to directory $(1)
+##  $(call add-prebuilt-target,dir,srcfile)
+###########################################################
 
+define add-prebuilt-target
+    $(eval $(include-prebuilt-target))
+endef
+
+define include-prebuilt-target
+
+file := $(1)/$(2)
+$$(file): $$(LOCAL_PATH)/$(2) | $$(ACP)
+	$$(copy-file-to-new-target)
+ALL_PREBUILT += $$(file)
+
+endef
+
+###########################################################
+## Add multiple prebuilts $(2) to directory $(1)
+##  $(call add-prebuilt-targets,dir,srcfile1...)
+###########################################################
+
+define add-prebuilt-targets
+    $(foreach f,$(2),$(call add-prebuilt-target,$(1),$(f)))
+endef
+
+###########################################################
+## Common rules to build a java package
+##  $(call build-package,[tags],[certificate])
+###########################################################
+
+define build-package
+    $(eval $(build-package-rules))
+endef
+
+###########################################################
+## A third party java package is only built if
+## TARGET_HAS_THIRD_PARTY_APPS = true
+##  $(call build-third-party-package,[tags],[certificate])
+###########################################################
+
+define build-third-party-package
+    $(if $(filter true,$(TARGET_HAS_THIRD_PARTY_APPS)),$(build-package))
+endef
+
+define build-package-rules
+
+LOCAL_PATH := $$(call my-dir)
+include $$(CLEAR_VARS)
+LOCAL_MODULE_TAGS := $$(if $(1),$(1),user)
+LOCAL_SRC_FILES := $$(call all-java-files-under,src)
+LOCAL_PACKAGE_NAME := $$(notdir $$(LOCAL_PATH))
+LOCAL_CERTIFICATE := $(2)
+include $$(BUILD_PACKAGE)
+include $$(call all-subdir-makefiles)
+
+endef
 
 ###########################################################
 ## The intermediates directory.  Where object files go for
