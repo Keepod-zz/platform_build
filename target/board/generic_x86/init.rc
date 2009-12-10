@@ -67,6 +67,7 @@ loglevel 3
     mkdir /data/app 0771 system system
     mkdir /data/property 0700 root root
 
+    mkdir /data/system 0771 system system
     mkdir /data/misc/wifi 0770 wifi wifi
     mkdir /data/misc/wifi/sockets 0770 wifi wifi
     mkdir /data/system/wpa_supplicant 0770 wifi wifi
@@ -244,7 +245,7 @@ service installd /system/bin/installd
     socket installd stream 600 system system
 
 service wpa_supplicant /system/bin/wpa_supplicant -Dwext -iwlan0 -c /data/misc/wifi/wpa_supplicant.conf
-    group system wifi
+    group system wifi inet
     disabled
     oneshot
 
