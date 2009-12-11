@@ -8,6 +8,9 @@
 #      http://www.apache.org/licenses/LICENSE-2.0
 #
 
+TARGET_HARDWARE_INIT_RC := $(wildcard $(LOCAL_PATH)/init.$(TARGET_PRODUCT).rc)
+$(if $(TARGET_HARDWARE_INIT_RC),$(call add-prebuilt-target,$(TARGET_ROOT_OUT),$(notdir $(TARGET_HARDWARE_INIT_RC))))
+
 $(call add-prebuilt-targets,$(TARGET_OUT),$(TARGET_PREBUILT_APPS))
 
 LOCAL_PATH := $(call my-dir)

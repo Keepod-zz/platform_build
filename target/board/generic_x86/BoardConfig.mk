@@ -33,5 +33,6 @@ BOARD_USES_GENERIC_AUDIO ?= false
 BOARD_USES_ALSA_AUDIO ?= true
 BUILD_WITH_ALSA_UTILS ?= true
 BOARD_HAVE_BLUETOOTH ?= true
+BOARD_USES_TSLIB ?= false
 
 BOARD_KERNEL_CMDLINE ?= root=/dev/ram0 androidboot_hardware=$(TARGET_PRODUCT) acpi_sleep=s3_bios,s3_mode
