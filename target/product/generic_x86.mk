@@ -21,7 +21,7 @@ $(call inherit-product,$(SRC_TARGET_DIR)/product/generic.mk)
 PRODUCT_BRAND := generic_x86
 PRODUCT_DEVICE := generic_x86
 PRODUCT_NAME := generic_x86
-PRODUCT_POLICY := android.policy_mid
+PRODUCT_POLICY := android.policy_phone
 PRODUCT_PROPERTY_OVERRIDES += \
 	ro.com.android.dataroaming=true
 
