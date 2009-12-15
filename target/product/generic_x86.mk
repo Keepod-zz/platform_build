@@ -3,10 +3,12 @@
 
 PRODUCT_PACKAGES := \
     GlobalTime \
+    IM \
     JETBoy \
     LunarLander \
     NotePad \
     PinyinIME \
+    Provision \
     RSSReader \
     Snake
 
