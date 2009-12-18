@@ -1,3 +1,13 @@
+#
+# Copyright (C) 2009 The Android-x86 Open Source Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+
 ifeq ($(TARGET_PREBUILT_KERNEL),)
 
 ifeq ($(TARGET_ARCH),x86)
@@ -10,37 +20,38 @@ TARGET_KERNEL_CONFIG ?= goldfish_defconfig
 endif
 
 KBUILD_OUTPUT := $(CURDIR)/$(TARGET_OUT_INTERMEDIATES)/kernel
-$(KBUILD_OUTPUT):
-	mkdir -p $(KBUILD_OUTPUT)
-
 mk_kernel := + $(hide) $(MAKE) -C kernel O=$(KBUILD_OUTPUT) ARCH=$(TARGET_ARCH) $(if $(SHOW_COMMANDS),V=1)
 ifneq ($(TARGET_ARCH),$(HOST_ARCH))
 mk_kernel += CROSS_COMPILE=$(CURDIR)/$(TARGET_TOOLS_PREFIX)
 endif
 
+ifneq ($(wildcard $(TARGET_KERNEL_CONFIG)),)
+KERNEL_CONFIG_FILE := $(TARGET_KERNEL_CONFIG)
+else
 KERNEL_CONFIG_FILE := kernel/arch/$(TARGET_ARCH)/configs/$(TARGET_KERNEL_CONFIG)
+endif
 MOD_ENABLED := $(shell grep ^CONFIG_MODULES=y $(KERNEL_CONFIG_FILE))
 FIRMWARE_ENABLED := $(shell grep ^CONFIG_FIRMWARE_IN_KERNEL=y $(KERNEL_CONFIG_FILE))
 
 # I understand Android build system discourage to use submake,
 # but I don't want to write a complex Android.mk to build kernel.
 # This is the simplest way I can think.
+KERNEL_DOTCONFIG_FILE := $(KBUILD_OUTPUT)/.config
+$(KERNEL_DOTCONFIG_FILE): $(KERNEL_CONFIG_FILE) | $(ACP)
+	$(copy-file-to-new-target)
+
 BUILT_KERNEL_TARGET := $(KBUILD_OUTPUT)/arch/$(TARGET_ARCH)/boot/$(KERNEL_TARGET)
-$(INSTALLED_KERNEL_TARGET): $(KERNEL_CONFIG_FILE) | $(KBUILD_OUTPUT) $(ACP)
-	$(mk_kernel) $(TARGET_KERNEL_CONFIG)
+$(INSTALLED_KERNEL_TARGET): $(KERNEL_DOTCONFIG_FILE)
+	$(mk_kernel) nonint_oldconfig
 	$(mk_kernel) $(KERNEL_TARGET) $(if $(MOD_ENABLED),modules)
 	$(hide) $(ACP) -fp $(BUILT_KERNEL_TARGET) $@
 ifdef TARGET_PREBUILT_MODULES
 	$(hide) $(ACP) -r $(TARGET_PREBUILT_MODULES) $(TARGET_OUT)/lib
 else
-ifneq ($(MOD_ENABLED),)
-	$(mk_kernel) INSTALL_MOD_PATH=$(CURDIR)/$(TARGET_OUT) modules_install
+	$(if $(MOD_ENABLED),$(mk_kernel) INSTALL_MOD_PATH=$(CURDIR)/$(TARGET_OUT) modules_install)
 	$(hide) rm -f $(TARGET_OUT)/lib/modules/*/{build,source}
 endif
-ifneq ($(FIRMWARE_ENABLED),)
-	$(mk_kernel) INSTALL_FW_PATH=$(CURDIR)/$(TARGET_OUT)/lib/firmware firmware_install
-endif
-endif
+	$(if $(FIRMWARE_ENABLED),$(mk_kernel) INSTALL_MOD_PATH=$(CURDIR)/$(TARGET_OUT) firmware_install)
 
 installclean: FILES += $(KBUILD_OUTPUT) $(INSTALLED_KERNEL_TARGET)
 
