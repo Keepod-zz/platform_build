@@ -48,6 +48,7 @@ $(INSTALLED_KERNEL_TARGET): $(KERNEL_DOTCONFIG_FILE)
 ifdef TARGET_PREBUILT_MODULES
 	$(hide) $(ACP) -r $(TARGET_PREBUILT_MODULES) $(TARGET_OUT)/lib
 else
+	$(hide) rm -rf $(TARGET_OUT)/lib/modules
 	$(if $(MOD_ENABLED),$(mk_kernel) INSTALL_MOD_PATH=$(CURDIR)/$(TARGET_OUT) modules_install)
 	$(hide) rm -f $(TARGET_OUT)/lib/modules/*/{build,source}
 endif
