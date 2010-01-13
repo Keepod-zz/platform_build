@@ -13,6 +13,11 @@ $(if $(TARGET_HARDWARE_INIT_RC),$(call add-prebuilt-target,$(TARGET_ROOT_OUT),$(
 
 $(call add-prebuilt-targets,$(TARGET_OUT),$(TARGET_PREBUILT_APPS))
 
+ifeq ($(BOARD_USES_TSLIB),true)
+$(call add-prebuilt-targets,$(TARGET_OUT_DATA_ETC),\
+	$(subst $(LOCAL_PATH)/,,$(wildcard $(LOCAL_PATH)/pointercal* $(LOCAL_PATH)/ts.*)))
+endif
+
 LOCAL_PATH := $(call my-dir)
 DEFAULT_WPA_SUPPLICANT_CONF_DIR := $(LOCAL_PATH)
 
