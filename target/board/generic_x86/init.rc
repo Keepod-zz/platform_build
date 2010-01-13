@@ -18,6 +18,7 @@ loglevel 3
 # Backward compatibility
     symlink system/etc /etc
     symlink system/lib /lib
+    symlink /sys/kernel/debug /d
 
 # create mountpoints and mount tmpfs on sqlite_stmt_journals and debugfs on d
     mkdir /d
@@ -25,9 +26,9 @@ loglevel 3
     chmod 0777 /sdcard
     mkdir /data 0771 system system
     mkdir /cache 0770 system cache
+    mkdir /config 0500 root root
     mkdir /sqlite_stmt_journals 01777 root root
     mount tmpfs tmpfs /sqlite_stmt_journals size=4m
-    mount debugfs debugfs /d
 
     mount rootfs rootfs / ro remount
 
@@ -36,6 +37,8 @@ loglevel 3
     write /proc/cpu/alignment 4
     write /proc/sys/kernel/sched_latency_ns 10000000
     write /proc/sys/kernel/sched_wakeup_granularity_ns 2000000
+    write /proc/sys/kernel/sched_compat_yield 1
+    write /proc/sys/kernel/sched_child_runs_first 0
 
 # mount mtd partitions
 # TODO: this should be mounted by fs vol id (i.e. /dev/block-by-volid/system),
@@ -59,7 +62,7 @@ loglevel 3
 
 # create basic filesystem structure
     mkdir /data/misc 01771 system misc
-    mkdir /data/misc/hcid 0770 bluetooth bluetooth
+    mkdir /data/misc/bluetoothd 0770 bluetooth bluetooth
     mkdir /data/local 0771 shell shell
     mkdir /data/local/tmp 0771 shell shell
     mkdir /data/data 0771 system system
@@ -132,6 +135,10 @@ on boot
 
     # Set init its forked children's oom_adj.
     write /proc/1/oom_adj -16
+
+    # Tweak background writeout
+    write /proc/sys/vm/dirty_expire_centisecs 200
+    write /proc/sys/vm/dirty_background_ratio  5
 
     # Permissions for System Server and daemons.
     chown radio system /sys/android_power/state
@@ -230,6 +237,7 @@ service zygote /system/bin/app_process -Xzygote /system/bin --zygote --start-sys
     socket zygote stream 666
     onrestart write /sys/android_power/request_state wake
     onrestart write /sys/power/state on
+    onrestart restart media
 
 service media /system/bin/mediaserver
     user media
@@ -254,9 +262,11 @@ service dbus /system/bin/dbus-daemon --system --nofork
     user bluetooth
     group bluetooth net_bt_admin
 
-service hcid /system/bin/hcid -d -s -n -f /etc/bluez/hcid.conf
+service bluetoothd /system/bin/bluetoothd -n
     socket bluetooth stream 660 bluetooth bluetooth
     socket dbus_bluetooth stream 660 bluetooth bluetooth
+    # init.rc does not yet support applying capabilities, so run as root and
+    # let bluetoothd drop uid to bluetooth with the right linux capabilities
     group bluetooth net_bt_admin misc
     disabled
 
@@ -269,6 +279,18 @@ service hfag /system/bin/sdptool add --channel=10 HFAG
 service hsag /system/bin/sdptool add --channel=11 HSAG
     user bluetooth
     group bluetooth net_bt_admin misc
+    disabled
+    oneshot
+
+service opush /system/bin/sdptool add --channel=12 OPUSH
+    user bluetooth
+    group bluetooth net_bt_admin
+    disabled
+    oneshot
+
+service pbap /system/bin/sdptool add --channel=19 PBAP
+    user bluetooth
+    group bluetooth net_bt_admin
     disabled
     oneshot
 
