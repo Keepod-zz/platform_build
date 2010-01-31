@@ -2,15 +2,24 @@
 # It includes the base Android-x86 platform.
 
 PRODUCT_PACKAGES := \
+    DeskClock \
+    Gallery3D \
+    GlobalSearch \
     GlobalTime \
     IM \
+    ImProvider \
     JETBoy \
+    LiveWallpapers \
+    LiveWallpapersPicker \
     LunarLander \
+    MagicSmokeWallpapers \
     NotePad \
     PinyinIME \
     Provision \
     RSSReader \
-    Snake
+    Snake \
+    SoundRecorder \
+    VisualizationWallpapers \
 
 THIRD_PARTY_APPS = \
     ConnectBot \
