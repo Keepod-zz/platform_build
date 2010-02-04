@@ -206,6 +206,7 @@ on boot
     setprop keyguard.no_require_sim 1
     setprop ro.alarm.volume.adjustable true
     setprop ro.simulated.phone true
+    setprop dalvik.vm.heapsize 32M
 
     class_start default
 
