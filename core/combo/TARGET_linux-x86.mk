@@ -158,6 +158,6 @@ $(TARGET_CXX) \
 endef
 
 TARGET_GLOBAL_CFLAGS += -m32
-TARGET_GLOBAL_LDFLAGS += -m32
+TARGET_GLOBAL_LDFLAGS += -m32 $(if $(TARGET_STRIP),-s)
 
 endif #simulator
