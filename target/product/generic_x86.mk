@@ -20,6 +20,8 @@ PRODUCT_PACKAGES := \
     Snake \
     SoundRecorder \
     VisualizationWallpapers \
+    libRS \
+    librs_jni
 
 THIRD_PARTY_APPS = \
     ConnectBot \
