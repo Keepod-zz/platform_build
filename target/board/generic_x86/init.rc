@@ -413,5 +413,9 @@ service dumpstate /system/bin/dumpstate -s
     disabled
     oneshot
 
+service dhcpcd /system/bin/dhcpcd -o domain_name_servers -ABKL
+    disabled
+    oneshot
+
 #Please do not change anything below this line. If you want to add new service, add it above this line
 #REMOVE FROM HERE
