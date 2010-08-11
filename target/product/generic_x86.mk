@@ -26,6 +26,7 @@ PRODUCT_PACKAGES := \
 THIRD_PARTY_APPS = \
     ConnectBot \
     FileManager \
+    LIME \
 
 
 $(call inherit-product,$(SRC_TARGET_DIR)/product/generic.mk)
