@@ -344,7 +344,7 @@ service bootanim /system/bin/bootanimation
     disabled
     oneshot
 
-service wpa_supplicant /system/bin/wpa_supplicant -Dwext -iwlan0 -c /data/misc/wifi/wpa_supplicant.conf
+service wpa_supplicant /system/bin/wpa_supplicant -Dawext -iwlan0 -c /data/misc/wifi/wpa_supplicant.conf
     group system wifi inet
     disabled
     oneshot
