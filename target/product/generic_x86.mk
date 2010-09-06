@@ -29,6 +29,7 @@ THIRD_PARTY_APPS = \
     LIME \
 
 
+$(call inherit-product,frameworks/base/data/sounds/OriginalAudio.mk)
 $(call inherit-product,$(SRC_TARGET_DIR)/product/generic.mk)
 
 # Overrides
@@ -38,6 +39,8 @@ PRODUCT_NAME := generic_x86
 PRODUCT_POLICY := android.policy_phone
 PRODUCT_PROPERTY_OVERRIDES += \
 	ro.com.android.dataroaming=true
+
+PRODUCT_LOCALES += hdpi mdpi
 
 GENERIC_X86_CONFIG_MK := $(SRC_TARGET_DIR)/board/generic_x86/BoardConfig.mk
 GENERIC_X86_ANDROID_MK := $(SRC_TARGET_DIR)/board/generic_x86/AndroidBoard.mk
