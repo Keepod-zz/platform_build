@@ -259,8 +259,8 @@ on boot
     setprop net.tcp.buffersize.edge    4093,26280,35040,4096,16384,35040
     setprop net.tcp.buffersize.gprs    4092,8760,11680,4096,8760,11680
 
-    setprop ro.radio.use-ppp no
-    setprop ro.radio.noril yes
+    setprop ro.radio.use-ppp yes
+    setprop ro.radio.noril no
     setprop status.battery.state Slow
     setprop status.battery.level 5
     setprop status.battery.level_raw  50
@@ -279,8 +279,10 @@ on boot
     setprop app.setupwizard.disable 1
     setprop keyguard.no_require_sim 1
     setprop ro.alarm.volume.adjustable true
-    setprop ro.simulated.phone true
+    setprop ro.simulated.phone false
     setprop dalvik.vm.heapsize 32M
+    setprop rild.libpath /system/lib/libreference-ril.so
+    setprop rild.libargs "-d /dev/ttyUSB1"
 
     class_start default
 
@@ -318,7 +320,7 @@ service netd /system/bin/netd
 
 #service debuggerd /system/bin/debuggerd
 
-service ril-daemon /system/bin/rild -l /system/lib/libreference-ril.so
+service ril-daemon /system/bin/rild
     socket rild stream 660 root radio
     socket rild-debug stream 660 radio system
     user root
@@ -428,6 +430,3 @@ on property:gsm.sim.state=READY
 
 on property:gsm.sim.state=UNKNOWN
     stop ppp
-
-#Please do not change anything below this line. If you want to add new service, add it above this line
-#REMOVE FROM HERE
