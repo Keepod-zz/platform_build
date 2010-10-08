@@ -36,6 +36,11 @@ BOARD_USES_GENERIC_AUDIO ?= false
 BOARD_USES_ALSA_AUDIO ?= true
 BUILD_WITH_ALSA_UTILS ?= true
 BOARD_HAVE_BLUETOOTH ?= true
+# Set to true if you have touch screen
 BOARD_USES_TSLIB ?= false
+# Remove the comment if you are using i915 driver
+#BOARD_USES_I915 := true
+# This enables the wpa wireless driver
+#BOARD_WPA_SUPPLICANT_DRIVER := AWEXT
 
 BOARD_KERNEL_CMDLINE ?= root=/dev/ram0 androidboot_hardware=$(TARGET_PRODUCT) acpi_sleep=s3_bios,s3_mode
