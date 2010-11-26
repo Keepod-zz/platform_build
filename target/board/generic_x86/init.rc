@@ -272,8 +272,6 @@ on boot
     setprop alsa.mixer.playback.headset Master
     setprop alsa.mixer.playback.speaker Master
 
-    setprop EXTERNAL_STORAGE_STATE unmounted
-
     # merge from system.prop
     setprop ro.config.sync yes
     setprop app.setupwizard.disable 1
