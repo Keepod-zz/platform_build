@@ -43,4 +43,19 @@ BOARD_USES_TSLIB ?= false
 # This enables the wpa wireless driver
 #BOARD_WPA_SUPPLICANT_DRIVER := AWEXT
 
+BOARD_USES_HWOPENGL :=        \
+	$(BOARD_USES_I915C)   \
+	$(BOARD_USES_I915G)   \
+	$(BOARD_USES_I965C)   \
+	$(BOARD_USES_I965G)   \
+	$(BOARD_USES_NOUVEAU) \
+	$(BOARD_USES_VMWGFX)  \
+
+ifeq ($(strip $(sort $(BOARD_USES_HWOPENGL))),true)
+BOARD_USES_DRM := true
+ifeq ($(strip $(BOARD_EGL_CFG)),)
+BOARD_EGL_CFG := $(call _mydir)egl.cfg
+endif
+endif
+
 BOARD_KERNEL_CMDLINE ?= root=/dev/ram0 androidboot_hardware=$(TARGET_PRODUCT) acpi_sleep=s3_bios,s3_mode
