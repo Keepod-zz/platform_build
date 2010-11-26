@@ -23,6 +23,9 @@ DEFAULT_WPA_SUPPLICANT_CONF_DIR := $(LOCAL_PATH)
 
 $(call add-prebuilt-target,$(TARGET_ROOT_OUT),init.rc)
 
+TARGET_PREBUILT_APPS := $(subst $(LOCAL_PATH)/,,$(wildcard $(LOCAL_PATH)/app/*))
+$(call add-prebuilt-targets,$(TARGET_OUT),$(TARGET_PREBUILT_APPS))
+
 include $(call all-subdir-makefiles)
 
 define include-wpa-supplicant-conf
