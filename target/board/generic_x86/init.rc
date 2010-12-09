@@ -423,8 +423,18 @@ service ppp /system/bin/pppd call gprs
     disabled
     oneshot
 
+service logcat /system/bin/logcat -v time -f /data/log.txt
+    disabled
+    oneshot
+
 on property:gsm.sim.state=READY
     start ppp
 
 on property:gsm.sim.state=UNKNOWN
     stop ppp
+
+on property:debug.logcat=1
+    start logcat
+
+on property:debug.logcat=0
+    stop logcat
