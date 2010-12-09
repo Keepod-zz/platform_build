@@ -58,4 +58,4 @@ BOARD_EGL_CFG := $(call _mydir)egl.cfg
 endif
 endif
 
-BOARD_KERNEL_CMDLINE ?= root=/dev/ram0 androidboot_hardware=$(TARGET_PRODUCT) acpi_sleep=s3_bios,s3_mode
+BOARD_KERNEL_CMDLINE ?= root=/dev/ram0 androidboot_hardware=$(TARGET_PRODUCT) acpi_sleep=s3_bios,s3_mode $(if $(BOARD_USES_DRM),,video=-16)
