@@ -282,6 +282,8 @@ on boot
     setprop ro.alarm.volume.adjustable true
     setprop ro.simulated.phone false
     setprop dalvik.vm.heapsize 32M
+    setprop ro.config.nocheckin yes
+    setprop ro.com.google.clientidbase android-google
     setprop rild.libpath /system/lib/libreference-ril.so
     setprop rild.libargs "-d /dev/ttyUSB1"
 
