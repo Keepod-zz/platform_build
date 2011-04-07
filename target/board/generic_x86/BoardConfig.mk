@@ -49,10 +49,12 @@ BOARD_USES_HWOPENGL :=        \
 	$(BOARD_USES_I965C)   \
 	$(BOARD_USES_I965G)   \
 	$(BOARD_USES_NOUVEAU) \
+	$(BOARD_USES_R600G)   \
 	$(BOARD_USES_VMWGFX)  \
 
 ifeq ($(strip $(sort $(BOARD_USES_HWOPENGL))),true)
 BOARD_USES_DRM := true
+BOARD_USES_MESA := true
 ifeq ($(strip $(BOARD_EGL_CFG)),)
 BOARD_EGL_CFG := $(call _mydir)egl.cfg
 endif
