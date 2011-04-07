@@ -31,6 +31,7 @@ THIRD_PARTY_APPS = \
 
 $(call inherit-product,frameworks/base/data/sounds/OriginalAudio.mk)
 $(call inherit-product,$(SRC_TARGET_DIR)/product/generic.mk)
+$(call inherit-product,device/common/keymaps/keymaps.mk)
 
 # Overrides
 PRODUCT_BRAND := generic_x86

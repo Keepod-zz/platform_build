@@ -23,10 +23,9 @@ DEFAULT_WPA_SUPPLICANT_CONF_DIR := $(LOCAL_PATH)
 
 $(call add-prebuilt-target,$(TARGET_ROOT_OUT),init.rc)
 
-TARGET_PREBUILT_APPS := $(subst $(LOCAL_PATH)/,,$(wildcard $(LOCAL_PATH)/app/*))
+LOCAL_PATH := device/common
+TARGET_PREBUILT_APPS := $(subst $(LOCAL_PATH)/,,$(wildcard $(LOCAL_PATH)/app/*.apk))
 $(call add-prebuilt-targets,$(TARGET_OUT),$(TARGET_PREBUILT_APPS))
-
-include $(call all-subdir-makefiles)
 
 define include-wpa-supplicant-conf
 LOCAL_PATH := $(1)
@@ -48,3 +47,5 @@ ifneq ($(BOARD_WPA_SUPPLICANT_DRIVER),)
 BOARD_WPA_SUPPLICANT_CONF_DIR ?= $(DEFAULT_WPA_SUPPLICANT_CONF_DIR)
 $(call add-wpa-supplicant-conf,$(BOARD_WPA_SUPPLICANT_CONF_DIR))
 endif
+
+-include device/common/firmware/firmware.mk
