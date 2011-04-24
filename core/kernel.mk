@@ -54,6 +54,18 @@ else
 endif
 	$(if $(FIRMWARE_ENABLED),$(mk_kernel) INSTALL_MOD_PATH=$(CURDIR)/$(TARGET_OUT) firmware_install)
 
+# rules to get source of Broadcom 802.11a/b/g/n hybrid device driver
+# based on broadcomsetup.sh of Kyle Evans
+WL_ENABLED := $(shell grep ^CONFIG_WL=[my] $(KERNEL_CONFIG_FILE))
+WL_PATH := drivers/net/wireless/wl
+WL_SRC := kernel/$(WL_PATH)/hybrid-portsrc_x86_32-v5_100_82_38.tar.gz
+$(WL_SRC):
+	@echo Downloading $(@F)...
+	$(hide) curl http://www.broadcom.com/docs/linux_sta/$(@F) > $@ && tar zxf $@ -C $(@D) --overwrite && (cd kernel; git checkout $(WL_PATH)) && \
+		sed -i '/<linux\/wireless.h>/ a#include <linux/semaphore.h>' $(@D)/src/wl/sys/wl_iw.h && \
+		sed -i 's/init_MUTEX(&wl->sem)/\n#ifndef init_MUTEX\nsema_init(\&wl->sem,1)\n#else\ninit_MUTEX(\&wl->sem)\n#endif\n/' $(@D)/src/wl/sys/wl_linux.c
+$(INSTALLED_KERNEL_TARGET): $(if $(WL_ENABLED),$(WL_SRC))
+
 installclean: FILES += $(KBUILD_OUTPUT) $(INSTALLED_KERNEL_TARGET)
 
 TARGET_PREBUILT_KERNEL  := $(INSTALLED_KERNEL_TARGET)
