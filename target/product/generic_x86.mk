@@ -14,7 +14,6 @@ PRODUCT_PACKAGES := \
     LunarLander \
     MagicSmokeWallpapers \
     NotePad \
-    PinyinIME \
     Provision \
     RSSReader \
     Snake \
