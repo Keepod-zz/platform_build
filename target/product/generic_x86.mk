@@ -20,7 +20,10 @@ PRODUCT_PACKAGES := \
     Snake \
     SoundRecorder \
     VisualizationWallpapers \
-    libRS \
+    gralloc.mesa \
+    i915_dri \
+    i965_dri \
+    libGLES_mesa \
     librs_jni
 
 THIRD_PARTY_APPS = \
