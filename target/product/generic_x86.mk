@@ -19,6 +19,7 @@ PRODUCT_PACKAGES := \
     Snake \
     SoundRecorder \
     VisualizationWallpapers \
+    faketsd \
     gralloc.mesa \
     i915_dri \
     i965_dri \

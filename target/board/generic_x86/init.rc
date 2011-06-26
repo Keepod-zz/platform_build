@@ -432,6 +432,10 @@ service logcat /system/bin/logcat -v time -f /data/log.txt
     disabled
     oneshot
 
+service faketsd /system/bin/faketsd
+    user bluetooth
+    group bluetooth
+
 on property:gsm.sim.state=READY
     start ppp
 
