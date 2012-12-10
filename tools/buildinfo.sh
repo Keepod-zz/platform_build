@@ -24,6 +24,9 @@ echo "ro.product.cpu.abi=$TARGET_CPU_ABI"
 if [ -n "$TARGET_CPU_ABI2" ] ; then
   echo "ro.product.cpu.abi2=$TARGET_CPU_ABI2"
 fi
+if [ -n "$TARGET_CPU_ABI3" ] ; then
+  echo "ro.product.cpu.abi3=$TARGET_CPU_ABI3"
+fi
 echo "ro.product.manufacturer=$PRODUCT_MANUFACTURER"
 if [ -n "$PRODUCT_DEFAULT_LANGUAGE" ] ; then
   echo "ro.product.locale.language=$PRODUCT_DEFAULT_LANGUAGE"
